@@ -1,0 +1,64 @@
+package spring.batch.example.configuration;
+
+import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
+import org.springframework.batch.item.file.mapping.DefaultLineMapper;
+import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
+import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
+import org.springframework.batch.item.file.transform.FormatterLineAggregator;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
+import spring.batch.example.model.Person;
+
+@Configuration
+public class BatchItemConfig {
+
+    @Bean
+    @Scope("prototype")
+    public DefaultLineMapper<Person> personLineMapper() {
+        DefaultLineMapper<Person> lineMapper = new DefaultLineMapper<>();
+        lineMapper.setFieldSetMapper(personBeanWrapperFieldSetMapper());
+        lineMapper.setLineTokenizer(personDelimitedLineTokenizer());
+        return lineMapper;
+    }
+
+    @Bean
+    @Scope("prototype")
+    public DelimitedLineTokenizer personDelimitedLineTokenizer() {
+        DelimitedLineTokenizer tokenizer = new DelimitedLineTokenizer(',');
+        tokenizer.setNames(new String[] {"name", "surName", "age", "dateOfBirth", "address"});
+        return tokenizer;
+    }
+
+    @Bean
+    @Scope("prototype")
+    public BeanWrapperFieldSetMapper<Person> personBeanWrapperFieldSetMapper() {
+        BeanWrapperFieldSetMapper<Person> fieldSetMapper = new BeanWrapperFieldSetMapper<>();
+        fieldSetMapper.setTargetType(Person.class);
+        return fieldSetMapper;
+    }
+
+    @Bean
+    @Scope("prototype")
+    public FormatterLineAggregator<Person> personLineAggregator() {
+        FormatterLineAggregator<Person> lineAggregator = new FormatterLineAggregator<>();
+        lineAggregator.setFieldExtractor(personBeanWrapperFieldExtractor());
+        lineAggregator.setFormat("%-5s, %-5s, %-5d, %-20s, %20s");
+        return lineAggregator;
+    }
+
+    @Bean
+    @Scope("prototype")
+    public BeanWrapperFieldExtractor<Person> personBeanWrapperFieldExtractor() {
+        BeanWrapperFieldExtractor<Person> fieldExtractor = new BeanWrapperFieldExtractor<Person>();
+        fieldExtractor.setNames(new String[]{"surName", "name", "age", "address", "dateOfBirth"});
+        return fieldExtractor;
+    }
+
+    @Bean
+    public PersonItemProcessor personItemProcessor() {
+        return new PersonItemProcessor();
+    }
+
+
+}

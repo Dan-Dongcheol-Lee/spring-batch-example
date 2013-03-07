@@ -1,0 +1,15 @@
+ZONE_DNS_NAME, ACCOUNT_EPP_ID, BALANCE_DESCRIPTION
+apple, eppIdOne, new balance One
+apple, eppIdTwo, new balance Two
+ari, eppIdOne, new balance One
+ari, eppIdTwo, new balance Two
+xn--mgbaam7a8h, eppIdOne, new balance One
+xn--mgbaam7a8h, eppIdTwo, new balance Two
+xn--fo-gka.apple, eppIdOne, new balance One
+xn--fo-gka.apple, eppIdTwo, new balance Two
+xn--fo-gka.tree, eppIdOne, new balance One
+xn--fo-gka.tree, eppIdTwo, new balance Two
+asciionly, eppIdOne, new balance One
+asciionly, eppIdTwo, new balance Two
+lblo, eppIdOne, new balance One
+lblo, eppIdTwo, new balance Two

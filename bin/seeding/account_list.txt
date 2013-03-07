@@ -1,0 +1,3 @@
+EPP_ID, NAME, STREET_LINE1, STREET_LINE2, STREET_LINE3, CITY, COUNTRY_CODE, POSTCODE, STATE, PHONE, FAX, EMAIL, WHOIS_SERVER, REFERRAL_URL, TRANSFER_EMAIL, IANA_ID
+eppIdOne , One.inc, address line 1, address line 2, address line 3, Melbourne, AU, 3000, Victoria, +61.39999999, +61.399988888, One@abc.com, dns.One.com, http://www.One.com, One@transfer.email, 111111
+eppIdTwo , Two.inc, address line 1, address line 2, address line 3, Melbourne, AU, 3000, Victoria, +61.39999999, +61.399988888, Two@abc.com, dns.Two.com, http://www.Two.com, Two@transfer.email, 111112

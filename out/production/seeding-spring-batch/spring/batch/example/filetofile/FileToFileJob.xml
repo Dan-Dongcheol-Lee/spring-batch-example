@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<b:beans xmlns:b="http://www.springframework.org/schema/beans"
+    xmlns="http://www.springframework.org/schema/batch"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd">
+
+    <job id="fileToFileJob">
+        <step id="step1">
+            <tasklet>
+                <chunk commit-interval="#{jobParameters['COMMIT_INTERVAL']}"
+                    reader="itemReader" processor="personItemProcessor" writer="itemWriter"/>
+            </tasklet>
+        </step>
+		<listeners>
+			<listener ref="personItemProcessor"/>
+        </listeners>
+    </job>
+
+</b:beans>
