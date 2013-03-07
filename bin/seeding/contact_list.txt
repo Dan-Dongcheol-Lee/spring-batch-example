@@ -1,2 +1,0 @@
-CLIENT_ASSIGNED_ID,INTL_NAME,INTL_CITY,INTL_COUNTRY,EMAIL,CREATOR_ACCOUNT_ID,SPONSOR_ACCOUNT_ID
-requiredContact, intcontact, melbourne, au, contact@xyz.com, eppIdOne, eppIdOne

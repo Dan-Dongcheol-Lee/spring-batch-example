@@ -1,8 +1,0 @@
-PRIMARY_DNS_NAME, REGISTRANT_CONTACT_ID, SPONSOR_ACCOUNT_ID, CREATOR_ACCOUNT_ID, ZONE_POLICY_NAME, CANONICAL_NAME
-apple, requiredContact, eppIdOne, eppIdOne, functional-test, 
-ari, requiredContact, eppIdOne, eppIdOne, automated-test, 
-xn--mgbaam7a8h, requiredContact, eppIdOne, eppIdOne, functional-test-arabic,  
-xn--fo-gka.apple, requiredContact, eppIdOne, eppIdOne, functional-test, foo
-xn--fo-gka.tree, requiredContact, eppIdOne, eppIdOne, functional-test, 
-asciionly, requiredContact, eppIdOne, eppIdOne, functional-test-ascii-only, 
-lblo, requiredContact, eppIdOne, eppIdOne, functional-test-lblo, 

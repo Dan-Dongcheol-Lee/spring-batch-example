@@ -1,3 +1,0 @@
-ACCOUNT_EPP_ID
-eppIdOne
-eppIdTwo

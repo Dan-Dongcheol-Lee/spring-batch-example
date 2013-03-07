@@ -1,7 +1,0 @@
-ACCESS_METHOD,USERNAME, PASSWORD, ACCOUNT_EPP_ID, KNOWN_AS
-epp, client, password, eppIdOne,
-epp, client2, password, eppIdTwo,
-web, tester1, password, eppIdOne, Tester1
-web, tester2, password2, eppIdOne, Tester2
-web, tester3, password, eppIdTwo, Tester3
-web, tester4, password2, eppIdTwo, Tester4
