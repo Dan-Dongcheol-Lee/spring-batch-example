@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/seeding-spring-batch.iml" filepath="$PROJECT_DIR$/seeding-spring-batch.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spring-batch-example.iml" filepath="$PROJECT_DIR$/spring-batch-example.iml" />
     </modules>
   </component>
 </project>
