@@ -13,8 +13,8 @@ import org.springframework.context.annotation.ImportResource;
 import org.springframework.core.io.FileSystemResource;
 import spring.batch.example.model.Person;
 
-@Configuration
-@ImportResource("classpath:spring/batch/example/filetofile/FileToFileJob.xml")
+//@Configuration
+//@ImportResource("classpath:spring/batch/example/filetofile/FileToFileJob.xml")
 public class FileToFileJobConfig {
 
     @Autowired

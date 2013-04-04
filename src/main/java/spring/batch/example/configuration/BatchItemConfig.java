@@ -1,17 +1,22 @@
 package spring.batch.example.configuration;
 
+import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.batch.item.file.transform.FormatterLineAggregator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import spring.batch.example.model.Person;
 
 @Configuration
-public class BatchItemConfig {
+public abstract class BatchItemConfig {
+
+    @Autowired
+    private JobRepository jobRepository;
 
     @Bean
     @Scope("prototype")
@@ -25,7 +30,7 @@ public class BatchItemConfig {
     @Bean
     @Scope("prototype")
     public DelimitedLineTokenizer personDelimitedLineTokenizer() {
-        DelimitedLineTokenizer tokenizer = new DelimitedLineTokenizer(',');
+        DelimitedLineTokenizer tokenizer = new DelimitedLineTokenizer(",");
         tokenizer.setNames(new String[] {"name", "surName", "age", "dateOfBirth", "address"});
         return tokenizer;
     }

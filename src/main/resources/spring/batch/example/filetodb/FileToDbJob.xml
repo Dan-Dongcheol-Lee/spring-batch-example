@@ -3,8 +3,11 @@
     xmlns="http://www.springframework.org/schema/batch"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="
-        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-        http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd">
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+        http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.2.xsd">
+
+    <b:bean class="spring.batch.example.configuration.BatchApplicationConfig"/>
+    <b:bean class="spring.batch.example.configuration.BatchItemConfig"/>
 
     <job id="fileToDbJob">
         <step id="step1">
@@ -17,5 +20,17 @@
 			<listener ref="personItemProcessor"/>
         </listeners>
     </job>
+
+    <b:bean id="itemReader" scope="step"
+            class="org.springframework.batch.item.file.FlatFileItemReader">
+        <b:property name="resource" value="file:#{jobParameters['READ_FILE']}"/>
+        <b:property name="comments" value="#"/>
+        <b:property name="lineMapper" ref="personLineMapper"/>
+    </b:bean>
+
+    <b:bean id="itemWriter"
+            class="org.springframework.batch.item.database.HibernateItemWriter">
+        <b:property name="sessionFactory" ref="sessionFactory"/>
+    </b:bean>
 
 </b:beans>

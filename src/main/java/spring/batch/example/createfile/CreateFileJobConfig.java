@@ -5,8 +5,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 
-@Configuration
-@ImportResource("classpath:spring/batch/example/createfile/CreateFileJob.xml")
+//@Configuration
+//@ImportResource("classpath:spring/batch/example/createfile/CreateFileJob.xml")
 public class CreateFileJobConfig {
 
 	@Bean

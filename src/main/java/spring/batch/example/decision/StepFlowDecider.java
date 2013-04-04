@@ -9,7 +9,7 @@ public class StepFlowDecider implements JobExecutionDecider {
 
     @Override
     public FlowExecutionStatus decide(JobExecution jobExecution, StepExecution stepExecution) {
-        String FLOW_FLAG = jobExecution.getJobInstance().getJobParameters().getString("FLOW_FLAG", "EXIT");
+        String FLOW_FLAG = jobExecution.getJobParameters().getString("FLOW_FLAG", "EXIT");
         return new FlowExecutionStatus(FLOW_FLAG);
     }
 }

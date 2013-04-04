@@ -17,8 +17,8 @@ import spring.batch.example.configuration.BatchApplicationConfig;
 import spring.batch.example.configuration.BatchItemConfig;
 import spring.batch.example.model.Person;
 
-@Configuration
-@ImportResource("classpath:spring/batch/example/filetodb/FileToDbJob.xml")
+//@Configuration
+//@ImportResource("classpath:spring/batch/example/filetodb/FileToDbJob.xml")
 public class FileToDbJobConfig {
 
     @Autowired

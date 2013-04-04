@@ -3,9 +3,12 @@
     xmlns="http://www.springframework.org/schema/batch"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="
-        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-        http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd">
-    
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+        http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.2.xsd">
+
+    <b:bean class="spring.batch.example.configuration.BatchApplicationConfig"/>
+    <b:bean class="spring.batch.example.configuration.BatchItemConfig"/>
+
     <job id="multifilesToFileJob">
         <step id="cleanupFileStep" next="multiFilesStep">
             <tasklet ref="cleanupFileTasklet"/>
@@ -29,6 +32,8 @@
             <listener ref="personItemProcessor"/>
         </listeners>
     </step>
+
+    <b:bean id="cleanupFileTasklet" class="spring.batch.example.multifile.CleanupFileTasklet"/>
 
     <b:bean id="multiResourcePartitioner" scope="step"
         class="org.springframework.batch.core.partition.support.MultiResourcePartitioner">

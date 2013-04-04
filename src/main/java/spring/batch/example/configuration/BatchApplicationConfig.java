@@ -1,7 +1,7 @@
 package spring.batch.example.configuration;
 
 import org.apache.commons.dbcp.BasicDataSource;
-import org.hibernate.cfg.AnnotationConfiguration;
+import org.hibernate.SessionFactory;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.launch.support.SimpleJobLauncher;
 import org.springframework.batch.core.repository.JobRepository;
@@ -20,8 +20,9 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
-import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
 import org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean;
+import org.springframework.orm.hibernate4.HibernateTransactionManager;
+import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.annotation.PostConstruct;
@@ -45,7 +46,7 @@ public class BatchApplicationConfig {
 	
 	@Bean
 	public PlatformTransactionManager transactionManager() {
-		return new DataSourceTransactionManager(dataSource());
+		return new HibernateTransactionManager(sessionFactory().getObject());
 	}
 	
 	@Bean
@@ -76,13 +77,13 @@ public class BatchApplicationConfig {
 	}
 
     @PostConstruct
-    public void init() {
+    private void init() {
         DatabasePopulatorUtils.execute(resourceDatabasePopulator(), dataSource());
     }
 	
     @Bean
-    public AnnotationSessionFactoryBean sessionFactoryBean() throws Exception {
-        AnnotationSessionFactoryBean factory = new AnnotationSessionFactoryBean();
+    public LocalSessionFactoryBean sessionFactory() {
+        LocalSessionFactoryBean factory = new LocalSessionFactoryBean();
         factory.setHibernateProperties(hibernateProperties());
         factory.setDataSource(dataSource());
         factory.setPackagesToScan(new String[]{"spring.batch.example.model"});
