@@ -4,13 +4,15 @@ import java.net.URISyntaxException;
 
 public class PathUtils {
 
+    private static final String PROJECT_NAME = "spring-batch-example";
+
     public static String getProjectPath() {
         String path = null;
         try {
             path = Thread.currentThread().getContextClassLoader().getResource("batch.properties").toURI().getPath();
-            int index = path.indexOf("spring-batch-example");
+            int index = path.indexOf(PROJECT_NAME);
             if (index != -1) {
-                path = path.substring(0, index + 20);
+                path = path.substring(0, index + PROJECT_NAME.length());
             }
         } catch (URISyntaxException e) {
             e.printStackTrace();
