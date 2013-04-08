@@ -1,5 +1,6 @@
-.idea/
-*.iml
-*.iws
-target/
-logs/
+/.idea/
+/*.iml
+/*.iws
+/target/
+/logs/
+*_output.txt

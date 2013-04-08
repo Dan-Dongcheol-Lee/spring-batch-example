@@ -1,81 +1,79 @@
 package spring.batch.example.model;
 
-import java.util.Date;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.*;
-
-import org.apache.commons.lang3.builder.ToStringBuilder;
+import java.math.BigInteger;
+import java.util.Date;
 
 @Entity
 @Table(name = "person")
 public class Person {
 
     @Id
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "person_seq")
+//    @SequenceGenerator(name = "person_seq", sequenceName = "person_seq")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
+    private BigInteger id;
+
     @Column(name = "name")
-	private String name;
-    
+    private String name;
+
     @Column(name = "sur_name")
     private String surName;
-	
+
     @Column(name = "age")
     private int age;
-    
+
     @Column(name = "date_of_birth")
     private Date dateOfBirth;
-    
+
     @Column(name = "address")
     private String address;
 
-	public Long getId() {
-		return id;
-	}
+    public BigInteger getId() {
+        return id;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getSurName() {
+        return surName;
+    }
 
-	public String getSurName() {
-		return surName;
-	}
+    public void setSurName(String surName) {
+        this.surName = surName;
+    }
 
-	public void setSurName(String surName) {
-		this.surName = surName;
-	}
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
 
-	public Date getDateOfBirth() {
-		return dateOfBirth;
-	}
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
 
-	public void setDateOfBirth(Date dateOfBirth) {
-		this.dateOfBirth = dateOfBirth;
-	}
+    public String getAddress() {
+        return address;
+    }
 
-	public String getAddress() {
-		return address;
-	}
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
+    public int getAge() {
+        return age;
+    }
 
-	public int getAge() {
-		return age;
-	}
-
-	public void setAge(int age) {
-		this.age = age;
-	}
+    public void setAge(int age) {
+        this.age = age;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -106,7 +104,7 @@ public class Person {
     }
 
     @Override
-	public String toString() {
-		return ToStringBuilder.reflectionToString(this);
-	}
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
+    }
 }

@@ -2,8 +2,9 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 
 ext {
-	orgSpringframeworkVersion   = '3.2.2.RELEASE'
-    orgSpringframeworkBatchVersion = '2.2.0.BUILD-SNAPSHOT'
+	springFrameworkVersion      = '3.2.2.RELEASE'
+    springBatchVersion          = '2.2.0.BUILD-SNAPSHOT'
+    springDataMongoDbVersion    = '1.2.0.RELEASE'
 	ojdbc6Version               = '11.2.0.3'
 	hibernateVersion            = '4.1.9.Final'
 	guavaVersion                = '12.0.1'
@@ -29,6 +30,9 @@ repositories {
     maven {
         url "http://s3.amazonaws.com/maven.springframework.org/snapshot"
     }
+    maven {
+        url "http://repo.springsource.org/libs-release"
+    }
 }
 
 dependencies {
@@ -36,16 +40,17 @@ dependencies {
     compile "commons-dbcp:commons-dbcp:1.4"
     compile "commons-io:commons-io:2.1"
     compile "commons-collections:commons-collections:3.2"
-	compile "org.springframework:spring-orm:$orgSpringframeworkVersion"
-	compile "org.springframework:spring-context-support:$orgSpringframeworkVersion"
-	compile "org.springframework.batch:spring-batch-core:$orgSpringframeworkBatchVersion"
+	compile "org.springframework:spring-orm:$springFrameworkVersion"
+	compile "org.springframework:spring-context-support:$springFrameworkVersion"
+	compile "org.springframework.batch:spring-batch-core:$springBatchVersion"
+    compile "org.springframework.data:spring-data-mongodb:$springDataMongoDbVersion"
 	compile "org.hibernate:hibernate-core:$hibernateVersion"
 	compile "com.google.guava:guava:$guavaVersion"
 	compile "org.slf4j:slf4j-api:$slf4jVersion"
 	compile "org.slf4j:jul-to-slf4j:$slf4jVersion"
 	compile "org.slf4j:jcl-over-slf4j:$slf4jVersion"
 	compile "cglib:cglib-nodep:$cglibVersion"
-	testCompile "org.springframework:spring-test:$orgSpringframeworkVersion"
+	testCompile "org.springframework:spring-test:$springFrameworkVersion"
     testCompile "junit:junit:4.+"
 	testCompile "org.mockito:mockito-core:1.9.5"
 	runtime "ch.qos.logback:logback-core:$logBackVersion"

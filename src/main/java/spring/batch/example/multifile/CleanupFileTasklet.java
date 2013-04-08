@@ -18,7 +18,7 @@ public class CleanupFileTasklet implements Tasklet {
 
 	@Override
 	public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
-		logger.debug("Called execute().");
+		logger.debug("Cleaning up the target file.");
 		
 		Map<String, Object> jobParameters = chunkContext.getStepContext().getJobParameters();
 		String filePath = (String) jobParameters.get("WRITE_FILE");

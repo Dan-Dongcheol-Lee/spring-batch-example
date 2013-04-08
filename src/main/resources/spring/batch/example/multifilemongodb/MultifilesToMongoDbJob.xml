@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<b:beans xmlns:b="http://www.springframework.org/schema/beans"
+    xmlns="http://www.springframework.org/schema/batch"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+        http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.2.xsd">
+
+    <b:bean class="spring.batch.example.configuration.BatchApplicationConfig"/>
+    <b:bean class="spring.batch.example.configuration.BatchItemConfig"/>
+
+    <job id="multifilesToMongoDbJob">
+        <step id="cleanupFileStep" next="multiFilesStep">
+            <tasklet ref="cleanupPeopleTasklet"/>
+        </step>
+        <step id="multiFilesStep">
+            <partition partitioner="multiResourcePartitioner" step="eachFileStep">
+                <!--
+                <handler/>
+                -->
+                <handler task-executor="asyncTaskExecutor"/>
+            </partition>
+        </step>
+    </job>
+
+    <step id="eachFileStep">
+        <tasklet>
+            <chunk commit-interval="10"
+                reader="itemReader" processor="personItemProcessor" writer="itemWriter"/>
+        </tasklet>
+        <listeners>
+            <listener ref="personItemProcessor"/>
+        </listeners>
+    </step>
+
+    <b:bean id="cleanupPeopleTasklet" class="spring.batch.example.multifilemongodb.CleanupPeopleTasklet">
+        <b:constructor-arg name="mongoTemplate" ref="mongoTemplate"/>
+    </b:bean>
+
+    <b:bean id="multiResourcePartitioner" scope="step"
+        class="org.springframework.batch.core.partition.support.MultiResourcePartitioner">
+        <b:property name="resources" value="file:#{jobParameters['READ_PATH']}"/>
+    </b:bean>
+
+    <b:bean id="itemReader" scope="step"
+            class="org.springframework.batch.item.file.FlatFileItemReader">
+        <b:property name="resource" value="#{stepExecutionContext['fileName']}"/>
+        <b:property name="comments" value="#"/>
+        <b:property name="lineMapper" ref="personLineMapper"/>
+    </b:bean>
+
+    <b:bean id="itemWriter" scope="step"
+            class="org.springframework.batch.item.data.MongoItemWriter">
+        <b:property name="delete" value="false"/>
+        <b:property name="template" ref="mongoTemplate"/>
+        <b:property name="collection" value="people"/>
+    </b:bean>
+
+</b:beans>
