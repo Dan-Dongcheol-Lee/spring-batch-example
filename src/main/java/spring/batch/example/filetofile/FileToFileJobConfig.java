@@ -13,6 +13,8 @@ import org.springframework.context.annotation.ImportResource;
 import org.springframework.core.io.FileSystemResource;
 import spring.batch.example.model.Person;
 
+import static spring.batch.example.utils.PathUtils.getProjectPath;
+
 //@Configuration
 //@ImportResource("classpath:spring/batch/example/filetofile/FileToFileJob.xml")
 public class FileToFileJobConfig {
@@ -25,9 +27,8 @@ public class FileToFileJobConfig {
 
 	@Bean
 	public ItemReader<Person> itemReader() {
-		String path = "D:/app_pilot/scala_workspaces/seeding-spring-batch/sample_data/person_create.txt";
 		FlatFileItemReader<Person> itemReader = new FlatFileItemReader<>();
-		itemReader.setResource(new FileSystemResource(path));
+		itemReader.setResource(new FileSystemResource(getProjectPath() + "/sample_data/person_create.txt"));
 		itemReader.setComments(new String[] {"#"});
 		itemReader.setLineMapper(personLineMapper);
 		return itemReader;
@@ -35,9 +36,8 @@ public class FileToFileJobConfig {
 
 	@Bean
 	public ItemWriter<Person> itemWriter() {
-		String path = "D:/app_pilot/scala_workspaces/seeding-spring-batch/sample_data/person_after.txt";
 		FlatFileItemWriter<Person> itemWriter = new FlatFileItemWriter<>();
-		itemWriter.setResource(new FileSystemResource(path));
+		itemWriter.setResource(new FileSystemResource(getProjectPath() + "/sample_data/person_after.txt"));
         itemWriter.setShouldDeleteIfExists(true);
 		itemWriter.setLineAggregator(personLineAggregator);
 		return itemWriter;
