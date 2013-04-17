@@ -9,7 +9,7 @@
     <b:bean class="spring.batch.example.configuration.BatchApplicationConfig"/>
     <b:bean class="spring.batch.example.configuration.BatchItemConfig"/>
 
-    <job id="decisionJob1">
+    <job id="decisionJob1" incrementer="jobParametersIncrementer">
         <decision id="decider1" decider="stepFlowDecider">
             <end on="EXIT" exit-code="COMPLETED"/>
             <next on="FLOW_1" to="job1Step1" />

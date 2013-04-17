@@ -2,15 +2,13 @@ package spring.batch.example.decision;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.batch.core.BatchStatus;
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.core.JobParametersBuilder;
+import org.springframework.batch.core.*;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import spring.batch.example.common.BaseBatchJobTest;
 import spring.batch.example.utils.PathUtils;
 
 import static org.hamcrest.core.Is.is;
@@ -19,7 +17,7 @@ import static spring.batch.example.utils.PathUtils.getProjectPath;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/batch/example/decision/DecisionJob.xml")
-public class DecisionJobTest {
+public class DecisionJobTest extends BaseBatchJobTest {
 
 	@Autowired
 	private JobLauncher jobLauncher;
@@ -42,7 +40,9 @@ public class DecisionJobTest {
 		jobParametersBuilder.addLong("LINE_COUNT", 55L);
 		jobParametersBuilder.addString("APPEND_LINES", "false");
 
-		JobExecution jobExecution = jobLauncher.run(decisionJob1, jobParametersBuilder.toJobParameters());
+        JobParameters jobParameters = getNextJobParameters(decisionJob1, jobParametersBuilder.toJobParameters());
+
+		JobExecution jobExecution = jobLauncher.run(decisionJob1, jobParameters);
 
         assertThat(jobExecution.getStatus(), is(BatchStatus.COMPLETED));
 	}
@@ -56,7 +56,9 @@ public class DecisionJobTest {
         jobParametersBuilder.addString("READ_FILE", getProjectPath() + "/sample_data/person_create.txt");
         jobParametersBuilder.addString("WRITE_FILE", getProjectPath() + "/sample_data/person_after.txt");
 
-        JobExecution jobExecution = jobLauncher.run(decisionJob1, jobParametersBuilder.toJobParameters());
+        JobParameters jobParameters = getNextJobParameters(decisionJob1, jobParametersBuilder.toJobParameters());
+
+        JobExecution jobExecution = jobLauncher.run(decisionJob1, jobParameters);
 
         assertThat(jobExecution.getStatus(), is(BatchStatus.COMPLETED));
     }
@@ -71,7 +73,9 @@ public class DecisionJobTest {
         jobParametersBuilder.addLong("LINE_COUNT", 55L);
         jobParametersBuilder.addString("APPEND_LINES", "false");
 
-        JobExecution jobExecution = jobLauncher.run(decisionJob2, jobParametersBuilder.toJobParameters());
+        JobParameters jobParameters = getNextJobParameters(decisionJob2, jobParametersBuilder.toJobParameters());
+
+        JobExecution jobExecution = jobLauncher.run(decisionJob2, jobParameters);
 
         assertThat(jobExecution.getStatus(), is(BatchStatus.COMPLETED));
     }
@@ -89,7 +93,9 @@ public class DecisionJobTest {
         jobParametersBuilder.addString("READ_FILE", getProjectPath() + "/sample_data/person_create.txt");
         jobParametersBuilder.addString("WRITE_FILE", getProjectPath() + "/sample_data/person_after.txt");
 
-        JobExecution jobExecution = jobLauncher.run(decisionJob2, jobParametersBuilder.toJobParameters());
+        JobParameters jobParameters = getNextJobParameters(decisionJob2, jobParametersBuilder.toJobParameters());
+
+        JobExecution jobExecution = jobLauncher.run(decisionJob2, jobParameters);
 
         assertThat(jobExecution.getStatus(), is(BatchStatus.COMPLETED));
     }

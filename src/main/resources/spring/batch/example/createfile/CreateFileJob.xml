@@ -9,7 +9,7 @@
     <b:bean class="spring.batch.example.configuration.BatchApplicationConfig"/>
     <b:bean class="spring.batch.example.configuration.BatchItemConfig"/>
 
-    <job id="createFileJob">
+    <job id="createFileJob" incrementer="jobParametersIncrementer">
         <step id="createFileStep">
             <tasklet ref="createFileTasklet"/>
             <listeners>

@@ -3,48 +3,36 @@ package spring.batch.example.configuration;
 import com.google.common.collect.Lists;
 import com.mongodb.Mongo;
 import org.apache.commons.dbcp.BasicDataSource;
-import org.hibernate.SessionFactory;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.launch.support.SimpleJobLauncher;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.repository.support.JobRepositoryFactoryBean;
-import org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean;
-import org.springframework.batch.core.scope.StepScope;
 import org.springframework.batch.support.DatabaseType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.SyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
-import org.springframework.data.mongodb.MongoDbFactory;
-import org.springframework.data.mongodb.core.MongoDocumentWriter;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
-import org.springframework.jdbc.support.lob.OracleLobHandler;
-import org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
-import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
 @Configuration
-@PropertySource("classpath:batch.properties")
+@PropertySource("classpath:batch-oracle.properties")
 public class BatchApplicationConfig {
 
 	@Autowired
@@ -53,8 +41,8 @@ public class BatchApplicationConfig {
 	@Bean
 	public JobRepository jobRepository() throws Exception {
         JobRepositoryFactoryBean jobRepositoryFactoryBean = new JobRepositoryFactoryBean();
-        //jobRepositoryFactoryBean.setDatabaseType(DatabaseType.ORACLE.name());
-        jobRepositoryFactoryBean.setDatabaseType(DatabaseType.HSQL.name());
+        jobRepositoryFactoryBean.setDatabaseType(DatabaseType.ORACLE.name());
+//        jobRepositoryFactoryBean.setDatabaseType(DatabaseType.HSQL.name());
         jobRepositoryFactoryBean.setDataSource(dataSource());
         jobRepositoryFactoryBean.setTransactionManager(transactionManager());
         return jobRepositoryFactoryBean.getJobRepository();
@@ -97,9 +85,16 @@ public class BatchApplicationConfig {
         return new MongoTemplate(new Mongo("localhost", 27017), "test");
     }
 
+    @Bean
+    public JdbcTemplate jdbcTemplate() {
+        return new JdbcTemplate(dataSource());
+    }
+
     @PostConstruct
     private void init() {
-        DatabasePopulatorUtils.execute(resourceDatabasePopulator(), dataSource());
+        if (environment.getProperty("batch.execute.scripts", Boolean.class)) {
+            DatabasePopulatorUtils.execute(resourceDatabasePopulator(), dataSource());
+        }
     }
 	
     @Bean
@@ -114,9 +109,9 @@ public class BatchApplicationConfig {
     @Bean
     public Properties hibernateProperties() {
         Properties hibernateProperties = new Properties();
-        hibernateProperties.put("hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
-//        hibernateProperties.put("hibernate.dialect", "org.hibernate.dialect.Oracle10gDialect");
-        hibernateProperties.put("hibernate.show_sql", "true");
+//        hibernateProperties.put("hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
+        hibernateProperties.put("hibernate.dialect", "org.hibernate.dialect.Oracle10gDialect");
+        hibernateProperties.put("hibernate.show_sql", "false");
         return hibernateProperties;
     }
 
@@ -124,15 +119,10 @@ public class BatchApplicationConfig {
     public ResourceDatabasePopulator resourceDatabasePopulator() {
         ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator();
        List<ClassPathResource> scripts = Lists.newArrayList(
-               new ClassPathResource("schema-hsqldb.sql"),
-               new ClassPathResource("org/springframework/batch/core/schema-drop-hsqldb.sql"),
-               new ClassPathResource("org/springframework/batch/core/schema-hsqldb.sql"));
+               new ClassPathResource(environment.getProperty("batch.drop.script")),
+               new ClassPathResource(environment.getProperty("batch.schema.script")),
+               new ClassPathResource(environment.getProperty("batch.business.schema.script")));
         databasePopulator.setScripts(scripts.toArray(new ClassPathResource[]{}));
         return databasePopulator;
-    }
-
-    @Bean
-    private static StepScope stepScope() {
-        return new StepScope();
     }
 }

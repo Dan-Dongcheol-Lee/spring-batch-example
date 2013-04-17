@@ -9,7 +9,7 @@ public class PathUtils {
     public static String getProjectPath() {
         String path = null;
         try {
-            path = Thread.currentThread().getContextClassLoader().getResource("batch.properties").toURI().getPath();
+            path = Thread.currentThread().getContextClassLoader().getResource("batch-oracle.properties").toURI().getPath();
             int index = path.indexOf(PROJECT_NAME);
             if (index != -1) {
                 path = path.substring(0, index + PROJECT_NAME.length());

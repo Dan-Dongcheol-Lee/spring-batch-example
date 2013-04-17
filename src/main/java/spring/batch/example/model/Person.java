@@ -8,12 +8,13 @@ import java.util.Date;
 
 @Entity
 @Table(name = "person")
+@NamedQuery(name = "person.findByRownumRange", query = "from Person where rownum >= :minValue and rownum <= :maxValue")
 public class Person {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "person_seq")
-//    @SequenceGenerator(name = "person_seq", sequenceName = "person_seq")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "person_seq")
+    @SequenceGenerator(name = "person_seq", sequenceName = "person_seq")
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private BigInteger id;
 
     @Column(name = "name")

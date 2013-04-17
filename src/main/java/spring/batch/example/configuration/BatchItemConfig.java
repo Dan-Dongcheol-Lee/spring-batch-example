@@ -1,6 +1,5 @@
 package spring.batch.example.configuration;
 
-import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
@@ -10,14 +9,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
+import org.springframework.jdbc.core.JdbcTemplate;
+import spring.batch.example.common.ElapsedTimeJobListener;
 import spring.batch.example.common.PersonItemProcessor;
+import spring.batch.example.common.SequenceRunIdIncrementer;
 import spring.batch.example.model.Person;
 
 @Configuration
 public abstract class BatchItemConfig {
 
     @Autowired
-    private JobRepository jobRepository;
+    private JdbcTemplate jdbcTemplate;
+
+    @Bean
+    public SequenceRunIdIncrementer jobParametersIncrementer() {
+        return new SequenceRunIdIncrementer(jdbcTemplate);
+    }
 
     @Bean
     @Scope("prototype")
@@ -32,7 +39,7 @@ public abstract class BatchItemConfig {
     @Scope("prototype")
     public DelimitedLineTokenizer personDelimitedLineTokenizer() {
         DelimitedLineTokenizer tokenizer = new DelimitedLineTokenizer(",");
-        tokenizer.setNames(new String[] {"name", "surName", "age", "dateOfBirth", "address"});
+        tokenizer.setNames(new String[]{"name", "surName", "age", "dateOfBirth", "address"});
         return tokenizer;
     }
 
@@ -66,5 +73,8 @@ public abstract class BatchItemConfig {
         return new PersonItemProcessor();
     }
 
-
+    @Bean
+    public ElapsedTimeJobListener elapsedTimeJobListener() {
+        return new ElapsedTimeJobListener();
+    }
 }

@@ -9,18 +9,15 @@
     <b:bean class="spring.batch.example.configuration.BatchApplicationConfig"/>
     <b:bean class="spring.batch.example.configuration.BatchItemConfig"/>
 
-    <job id="multifilesToFileJob" incrementer="jobParametersIncrementer">
-        <step id="cleanupFileStep" next="multiFilesStep">
-            <tasklet ref="cleanupFileTasklet"/>
-        </step>
-        <step id="multiFilesStep">
-            <partition partitioner="multiResourcePartitioner" step="eachFileStep">
-                <!--
-                <handler/>
-                -->
-                <handler task-executor="asyncTaskExecutor"/>
+    <job id="rownumRangePartitioningDbJob" incrementer="jobParametersIncrementer">
+        <step id="rownumRangeStep">
+            <partition partitioner="personRownumRangePartitioner" step="eachFileStep">
+                <handler task-executor="asyncTaskExecutor" grid-size="2"/>
             </partition>
         </step>
+        <listeners>
+            <listener ref="elapsedTimeJobListener"/>
+        </listeners>
     </job>
 
     <step id="eachFileStep">
@@ -33,18 +30,22 @@
         </listeners>
     </step>
 
-    <b:bean id="cleanupFileTasklet" class="spring.batch.example.multifile.CleanupFileTasklet"/>
-
-    <b:bean id="multiResourcePartitioner" scope="step"
-        class="org.springframework.batch.core.partition.support.MultiResourcePartitioner">
-        <b:property name="resources" value="file:#{jobParameters['READ_PATH']}"/>
+    <b:bean id="personRownumRangePartitioner" scope="step"
+        class="spring.batch.example.partitioning.PersonRownumRangePartitioner">
+        <b:constructor-arg name="jdbcTemplate" ref="jdbcTemplate"/>
+        <b:constructor-arg name="query" value="select max(rn) from (select rownum as rn from person)"/>
     </b:bean>
 
     <b:bean id="itemReader" scope="step"
-            class="org.springframework.batch.item.file.FlatFileItemReader">
-        <b:property name="resource" value="#{stepExecutionContext['fileName']}"/>
-        <b:property name="comments" value="#"/>
-        <b:property name="lineMapper" ref="personLineMapper"/>
+            class="org.springframework.batch.item.database.HibernateCursorItemReader">
+        <b:property name="sessionFactory" ref="sessionFactory"/>
+        <b:property name="queryName" value="person.findByRownumRange"/>
+        <b:property name="parameterValues">
+            <b:map>
+                <b:entry key="maxValue" value="#{stepExecutionContext['partition_max']}"/>
+                <b:entry key="minValue" value="#{stepExecutionContext['partition_min']}"/>
+            </b:map>
+        </b:property>
     </b:bean>
 
     <b:bean id="itemWriter" scope="step"

@@ -9,15 +9,12 @@
     <b:bean class="spring.batch.example.configuration.BatchApplicationConfig"/>
     <b:bean class="spring.batch.example.configuration.BatchItemConfig"/>
 
-    <job id="multifilesToMongoDbJob">
+    <job id="multifilesToMongoDbJob" incrementer="jobParametersIncrementer">
         <step id="cleanupFileStep" next="multiFilesStep">
             <tasklet ref="cleanupPeopleTasklet"/>
         </step>
         <step id="multiFilesStep">
             <partition partitioner="multiResourcePartitioner" step="eachFileStep">
-                <!--
-                <handler/>
-                -->
                 <handler task-executor="asyncTaskExecutor"/>
             </partition>
         </step>

@@ -9,7 +9,7 @@
     <b:bean class="spring.batch.example.configuration.BatchApplicationConfig"/>
     <b:bean class="spring.batch.example.configuration.BatchItemConfig"/>
 
-    <job id="fileToFileJob">
+    <job id="fileToFileJob" incrementer="jobParametersIncrementer">
         <step id="step1">
             <tasklet>
                 <chunk commit-interval="#{jobParameters['COMMIT_INTERVAL']}"
