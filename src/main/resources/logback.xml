@@ -10,9 +10,15 @@
         <appender-ref ref="STDOUT" />
     </logger>
 
-    <logger name="org.springframework.batch" level="debug">
+    <logger name="org.springframework.batch" level="DEBUG">
         <appender-ref ref="STDOUT" />
     </logger>
+
+    <!--
+    <logger name="org.springframework.jdbc.core" level="TRACE">
+        <appender-ref ref="STDOUT" />
+    </logger>
+    -->
 
     <logger name="org.hibernate" level="ERROR">
         <appender-ref ref="STDOUT" />

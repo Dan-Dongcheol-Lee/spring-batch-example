@@ -8,7 +8,6 @@ import java.util.Date;
 
 @Entity
 @Table(name = "person")
-@NamedQuery(name = "person.findByRownumRange", query = "from Person where rownum >= :minValue and rownum <= :maxValue")
 public class Person {
 
     @Id
@@ -31,6 +30,16 @@ public class Person {
 
     @Column(name = "address")
     private String address;
+
+    public Person() {}
+
+    public Person(String name, String surName, int age, Date dateOfBirth, String address) {
+        this.name = name;
+        this.surName = surName;
+        this.age = age;
+        this.dateOfBirth = dateOfBirth;
+        this.address = address;
+    }
 
     public BigInteger getId() {
         return id;

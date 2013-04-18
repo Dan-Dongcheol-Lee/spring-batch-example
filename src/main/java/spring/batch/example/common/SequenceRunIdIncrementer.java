@@ -15,8 +15,7 @@ public class SequenceRunIdIncrementer implements JobParametersIncrementer {
 
     @Override
     public JobParameters getNext(JobParameters parameters) {
-        Long nextRunId = jdbcTemplate.queryForObject(
-                "select batch_run_id_seq.nextval from dual", Long.class);
+        Long nextRunId = jdbcTemplate.queryForObject("select batch_run_id_seq.nextval from dual", Long.class);
         JobParametersBuilder jobParametersBuilder = new JobParametersBuilder(parameters);
         jobParametersBuilder.addLong("run.id", nextRunId);
         return jobParametersBuilder.toJobParameters();

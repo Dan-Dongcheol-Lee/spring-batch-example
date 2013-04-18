@@ -9,7 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import spring.batch.example.common.ElapsedTimeJobListener;
 import spring.batch.example.common.PersonItemProcessor;
 import spring.batch.example.common.SequenceRunIdIncrementer;
@@ -19,11 +20,11 @@ import spring.batch.example.model.Person;
 public abstract class BatchItemConfig {
 
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private BatchApplicationConfig batchApplicationConfig;
 
     @Bean
     public SequenceRunIdIncrementer jobParametersIncrementer() {
-        return new SequenceRunIdIncrementer(jdbcTemplate);
+        return new SequenceRunIdIncrementer(batchApplicationConfig.jdbcTemplate());
     }
 
     @Bean
@@ -71,6 +72,11 @@ public abstract class BatchItemConfig {
     @Bean
     public PersonItemProcessor personItemProcessor() {
         return new PersonItemProcessor();
+    }
+
+    @Bean
+    public BeanPropertyRowMapper<Person> personBeanPropertyRowMapper() {
+        return new BeanPropertyRowMapper<>(Person.class);
     }
 
     @Bean

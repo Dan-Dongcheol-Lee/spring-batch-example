@@ -19,6 +19,7 @@ import org.springframework.core.task.SyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
@@ -42,7 +43,6 @@ public class BatchApplicationConfig {
 	public JobRepository jobRepository() throws Exception {
         JobRepositoryFactoryBean jobRepositoryFactoryBean = new JobRepositoryFactoryBean();
         jobRepositoryFactoryBean.setDatabaseType(DatabaseType.ORACLE.name());
-//        jobRepositoryFactoryBean.setDatabaseType(DatabaseType.HSQL.name());
         jobRepositoryFactoryBean.setDataSource(dataSource());
         jobRepositoryFactoryBean.setTransactionManager(transactionManager());
         return jobRepositoryFactoryBean.getJobRepository();
@@ -85,11 +85,6 @@ public class BatchApplicationConfig {
         return new MongoTemplate(new Mongo("localhost", 27017), "test");
     }
 
-    @Bean
-    public JdbcTemplate jdbcTemplate() {
-        return new JdbcTemplate(dataSource());
-    }
-
     @PostConstruct
     private void init() {
         if (environment.getProperty("batch.execute.scripts", Boolean.class)) {
@@ -109,7 +104,6 @@ public class BatchApplicationConfig {
     @Bean
     public Properties hibernateProperties() {
         Properties hibernateProperties = new Properties();
-//        hibernateProperties.put("hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
         hibernateProperties.put("hibernate.dialect", "org.hibernate.dialect.Oracle10gDialect");
         hibernateProperties.put("hibernate.show_sql", "false");
         return hibernateProperties;
@@ -125,4 +119,10 @@ public class BatchApplicationConfig {
         databasePopulator.setScripts(scripts.toArray(new ClassPathResource[]{}));
         return databasePopulator;
     }
+
+    @Bean
+    public JdbcTemplate jdbcTemplate() {
+        return new JdbcTemplate(dataSource());
+    }
+
 }
