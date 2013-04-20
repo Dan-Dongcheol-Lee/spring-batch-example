@@ -45,7 +45,7 @@ public class PrimaryKeyRangePartitioningDbJobTest extends BaseBatchJobTest {
         session.createQuery("delete from Person").executeUpdate();
 
         Date date = DateUtils.parseDate("01/01/2000", "dd/MM/yyyy");
-        for (int i = 1; i <= 10000; i++ ) {
+        for (int i = 1; i <= 20000; i++ ) {
             session.save(new Person("Foo" + i, "Bar" + i, 10, date, "Melbourne, VIC"));
         }
         session.flush();

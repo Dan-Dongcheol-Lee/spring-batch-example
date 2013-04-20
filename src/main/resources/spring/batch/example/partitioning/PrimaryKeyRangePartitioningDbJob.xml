@@ -68,13 +68,4 @@
         <b:property name="lineAggregator" ref="personLineAggregator"/>
     </b:bean>
 
-    <!--
-    <b:bean id="itemWriter" scope="step"
-            class="org.springframework.batch.item.file.FlatFileItemWriter">
-        <b:property name="resource"
-                    value="file:#{jobParameters['WRITE_PREFIX'] + '_output.txt'}"/>
-        <b:property name="lineAggregator" ref="personLineAggregator"/>
-    </b:bean>
-    -->
-
 </b:beans>
