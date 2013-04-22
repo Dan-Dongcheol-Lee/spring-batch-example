@@ -36,7 +36,7 @@
         </listeners>
     </job>
 
-    <job id="decisionJob2">
+    <job id="decisionJob2" incrementer="jobParametersIncrementer">
         <decision id="decider2" decider="stepFlowDecider">
             <end on="EXIT" exit-code="COMPLETED"/>
             <next on="FLOW_1" to="job2Step1" />

@@ -10,7 +10,7 @@
     <b:bean class="spring.batch.example.configuration.BatchItemConfig"/>
 
     <job id="multifilesToMongoDbJob" incrementer="jobParametersIncrementer">
-        <step id="cleanupFileStep" next="multiFilesStep">
+        <step id="cleanupPeopleStep" next="multiFilesStep">
             <tasklet ref="cleanupPeopleTasklet"/>
         </step>
         <step id="multiFilesStep">
