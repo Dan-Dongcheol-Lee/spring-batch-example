@@ -1,4 +1,3 @@
-select count(*) from person;
 
 select * from batch_job_execution;
 
