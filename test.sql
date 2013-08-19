@@ -1,7 +1,5 @@
 select count(*) from person;
 
-desc person;
-
 select rownum, name from person;
 
 
