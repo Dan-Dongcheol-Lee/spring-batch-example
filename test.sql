@@ -1,8 +1,5 @@
 select count(*) from person;
 
-select rownum, name from person;
-
-
 select * from batch_job_execution;
 
 select * from batch_job_instance;
