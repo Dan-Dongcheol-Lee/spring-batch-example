@@ -1,4 +1,3 @@
-#ddddddddddddddddddddddd
 
 select * from batch_job_execution;
 
